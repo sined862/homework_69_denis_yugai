@@ -28,9 +28,9 @@ def add_view(request, *args, **kwargs):
         a = request.GET.get('number_one')
         b = request.GET.get('number_two')
         if is_number(a) and is_number(b):
-            sum = float(a) + float(b)
+            result = float(a) + float(b)
             answer = {
-                "answer": sum
+                "answer": result
             }
             HttpResponse.status_code = 200
             if request.body:
@@ -47,69 +47,79 @@ def add_view(request, *args, **kwargs):
 
 
 def subtract_view(request, *args, **kwargs):
-
-    if is_number(a) or is_number(b):
-        sum = a - b
-        answer = {
-            "answer": sum
-        }
-        if request.body:
-            answer['content'] = json.loads(request.body)
-        return JsonResponse(answer)
-    else:
-        answer = {
-            "error": "Not number"
-        }
-        HttpResponse.status_code = 400
-        if request.body:
-            answer['content'] = json.loads(request.body)
-        return JsonResponse(answer)
-
-
-def multiply_view(request, *args, **kwargs):
-
-    if is_number(a) or is_number(b):
-        sum = a * b
-        answer = {
-            "answer": sum
-        }
-        if request.body:
-            answer['content'] = json.loads(request.body)
-        return JsonResponse(answer)
-    else:
-        answer = {
-            "error": "Not number"
-        }
-        HttpResponse.status_code = 400
-        if request.body:
-            answer['content'] = json.loads(request.body)
-        return JsonResponse(answer)
-
-
-def divide_view(request, *args, **kwargs):
-    
-    if is_number(a) or is_number(b):
-        if b != 0:
-            sum = a / b
+    if request.method == "GET":
+        a = request.GET.get('number_one')
+        b = request.GET.get('number_two')
+        if is_number(a) and is_number(b):
+            result = float(a) - float(b)
             answer = {
-                "answer": sum
+                "answer": result
             }
+            HttpResponse.status_code = 200
             if request.body:
                 answer['content'] = json.loads(request.body)
             return JsonResponse(answer)
         else:
             answer = {
-            "error": "Division by zero!"
-        }
-        HttpResponse.status_code = 400
-        if request.body:
-            answer['content'] = json.loads(request.body)
-        return JsonResponse(answer)
-    else:
-        answer = {
-            "error": "Not number"
-        }
-        HttpResponse.status_code = 400
-        if request.body:
-            answer['content'] = json.loads(request.body)
-        return JsonResponse(answer)
+                "error": "Input is not number!"
+            }
+            HttpResponse.status_code = 400
+            if request.body:
+                answer['content'] = json.loads(request.body)
+            return JsonResponse(answer)
+
+
+def multiply_view(request, *args, **kwargs):
+    if request.method == "GET":
+        a = request.GET.get('number_one')
+        b = request.GET.get('number_two')
+        if is_number(a) and is_number(b):
+            result = float(a) * float(b)
+            answer = {
+                "answer": result
+            }
+            HttpResponse.status_code = 200
+            if request.body:
+                answer['content'] = json.loads(request.body)
+            return JsonResponse(answer)
+        else:
+            answer = {
+                "error": "Input is not number!"
+            }
+            HttpResponse.status_code = 400
+            if request.body:
+                answer['content'] = json.loads(request.body)
+            return JsonResponse(answer)
+
+def divide_view(request, *args, **kwargs):
+    if request.method == "GET":
+        a = request.GET.get('number_one')
+        b = request.GET.get('number_two')
+        if is_number(a) or is_number(b):
+            a = float(a)
+            b = float(b)
+            if b != 0:
+                result = a / b
+                answer = {
+                    "answer": result
+                }
+                HttpResponse.status_code = 200
+                if request.body:
+                    answer['content'] = json.loads(request.body)
+                return JsonResponse(answer)
+            else:
+                answer = {
+                "error": "Division by zero!"
+                }
+                HttpResponse.status_code = 400
+                if request.body:
+                    answer['content'] = json.loads(request.body)
+                return JsonResponse(answer)
+        else:
+            answer = {
+                "error": "Not number"
+            }
+            HttpResponse.status_code = 400
+            if request.body:
+                answer['content'] = json.loads(request.body)
+            return JsonResponse(answer)

@@ -23,15 +23,15 @@
     <div class="container">
         <input id="number_one" type="text">
         <input id="number_two" type="text">
-        <button id="btn"> + </button>
-        <button id="btn-"> - </button>
-        <button id="btn*"> * </button>
-        <button id="btn/"> / </button>
+        <button data-endpoint="add"> + </button>
+        <button data-endpoint="subtract"> - </button>
+        <button data-endpoint="multiply"> * </button>
+        <button data-endpoint="divide"> / </button>
     </div>
     <script> 
-        $('.container').append(`<p id='answer'></p>`)
-        $(function(){
-            $('#btn').click(function(){
+        $('.container').append(`<p id='answer'></p>`);
+        function buttonClick(button, endPoint){
+            $(button).click(function(){
             let numberOne = $('#number_one').val()
             let numberTwo = $('#number_two').val()
             
@@ -39,17 +39,15 @@
                 $('.container').remove($('.answer'))
             }
             $.ajax({
-            url: `http://localhost:8000/add/?number_one=${numberOne}&number_two=${numberTwo}`,
+            url: `http://localhost:8000/${endPoint}/?number_one=${numberOne}&number_two=${numberTwo}`,
             method: 'GET',
             success: function(data, status){
-                console.log(data.answer)
                 $('#answer').attr('class', 'answer');
                 $('#answer').text(`Answer: ${data.answer}`);
                 $('#number_one').val('');
                 $('#number_two').val('');
             },
             error: function(data){
-                console.log(data.responseJSON.error)
                 $('#answer').attr('class', 'error');
                 $('#answer').text(`Error: ${data.responseJSON.error}`);
                 $('#number_one').val('');
@@ -57,9 +55,12 @@
             }
         })
         });
-        });
-
-        
+        }
+        let endpoints = $('button');
+        let button = $('button');
+        for(let i=0; i < $('button').length; i++){
+            buttonClick(endpoints[i], endpoints[i].dataset.endpoint);
+        }        
     </script>
 </body>
 </html>
