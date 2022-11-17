@@ -95,7 +95,7 @@ def divide_view(request, *args, **kwargs):
     if request.method == "GET":
         a = request.GET.get('number_one')
         b = request.GET.get('number_two')
-        if is_number(a) or is_number(b):
+        if is_number(a) and is_number(b):
             a = float(a)
             b = float(b)
             if b != 0:

@@ -33,15 +33,14 @@
         function buttonClick(button, endPoint){
             $(button).click(function(){
             let numberOne = $('#number_one').val()
-            let numberTwo = $('#number_two').val()
-            
+            let numberTwo = $('#number_two').val() 
             if($('.answer').length){
                 $('.container').remove($('.answer'))
             }
             $.ajax({
             url: `http://localhost:8000/${endPoint}/?number_one=${numberOne}&number_two=${numberTwo}`,
             method: 'GET',
-            success: function(data, status){
+            success: function(data){
                 $('#answer').attr('class', 'answer');
                 $('#answer').text(`Answer: ${data.answer}`);
                 $('#number_one').val('');
@@ -57,7 +56,6 @@
         });
         }
         let endpoints = $('button');
-        let button = $('button');
         for(let i=0; i < $('button').length; i++){
             buttonClick(endpoints[i], endpoints[i].dataset.endpoint);
         }        
