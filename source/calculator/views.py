@@ -11,6 +11,7 @@ b = numbers.get("B")
 
 def index_view(request, *args, **kwargs):
     if request.method == 'GET':
+        print(HttpResponse.status_code)
         return render(request, 'index.html')
 
 
