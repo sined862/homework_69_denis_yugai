@@ -24,23 +24,26 @@ def is_number(number):
 
 
 def add_view(request, *args, **kwargs):
-
-    if is_number(a) or is_number(b):
-        sum = a + b
-        answer = {
-            "answer": sum
-        }
-        if request.body:
-            answer['content'] = json.loads(request.body)
-        return JsonResponse(answer)
-    else:
-        answer = {
-            "error": "Not number"
-        }
-        HttpResponse.status_code = 400
-        if request.body:
-            answer['content'] = json.loads(request.body)
-        return JsonResponse(answer)
+    if request.method == "GET":
+        a = request.GET.get('number_one')
+        b = request.GET.get('number_two')
+        if is_number(a) and is_number(b):
+            sum = float(a) + float(b)
+            answer = {
+                "answer": sum
+            }
+            HttpResponse.status_code = 200
+            if request.body:
+                answer['content'] = json.loads(request.body)
+            return JsonResponse(answer)
+        else:
+            answer = {
+                "error": "Input is not number!"
+            }
+            HttpResponse.status_code = 400
+            if request.body:
+                answer['content'] = json.loads(request.body)
+            return JsonResponse(answer)
 
 
 def subtract_view(request, *args, **kwargs):

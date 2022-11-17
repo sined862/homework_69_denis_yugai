@@ -4,9 +4,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Калькулятор</title>
+    <script
+        src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+        crossorigin="anonymous">
+    </script>
+    <style>
+        .answer{
+            background-color: lightgreen;
+        }
+        .error{
+            background-color: lightsalmon;
+        }
+    </style>
 </head>
 <body>
-    Index
+    <div class="container">
+        <input id="number_one" type="text">
+        <input id="number_two" type="text">
+        <button id="btn"> + </button>
+        <button id="btn-"> - </button>
+        <button id="btn*"> * </button>
+        <button id="btn/"> / </button>
+    </div>
+    <script> 
+        $('.container').append(`<p id='answer'></p>`)
+        $(function(){
+            $('#btn').click(function(){
+            let numberOne = $('#number_one').val()
+            let numberTwo = $('#number_two').val()
+            
+            if($('.answer').length){
+                $('.container').remove($('.answer'))
+            }
+            $.ajax({
+            url: `http://localhost:8000/add/?number_one=${numberOne}&number_two=${numberTwo}`,
+            method: 'GET',
+            success: function(data, status){
+                console.log(data.answer)
+                $('#answer').attr('class', 'answer');
+                $('#answer').text(`Answer: ${data.answer}`);
+                $('#number_one').val('');
+                $('#number_two').val('');
+            },
+            error: function(data){
+                console.log(data.responseJSON.error)
+                $('#answer').attr('class', 'error');
+                $('#answer').text(`Error: ${data.responseJSON.error}`);
+                $('#number_one').val('');
+                $('#number_two').val('');
+            }
+        })
+        });
+        });
+
+        
+    </script>
 </body>
 </html>
